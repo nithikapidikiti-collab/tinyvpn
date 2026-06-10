@@ -3,6 +3,8 @@
 A lightweight VPN tunnel built from scratch — C core with AES-256-GCM encryption over UDP, and a Python control plane for key exchange and monitoring. Inspired by how WireGuard and OpenVPN are architected.
 
 ## Architecture
+
+```text
 +------------------------------------------------------+
 |                 TinyVPN Architecture                 |
 |                                                      |
@@ -16,6 +18,7 @@ A lightweight VPN tunnel built from scratch — C core with AES-256-GCM encrypti
 |   +-- monitor.py  (live stats)                       |
 |   +-- keygen.py   (quick key gen)                    |
 +------------------------------------------------------+
+```
 
 ## Stack
 - **C** — macOS `utun` kernel interface, AES-256-GCM via OpenSSL 3, UDP transport with custom packet framing
