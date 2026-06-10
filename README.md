@@ -1,6 +1,8 @@
 # TinyVPN
 
 A lightweight VPN tunnel built from scratch — C core with AES-256-GCM encryption over UDP, and a Python control plane for key exchange and monitoring. Inspired by how WireGuard and OpenVPN are architected.
+
+## Architecture
 ┌─────────────────────────────────────────────────────┐
 │                 TinyVPN Architecture                 │
 │                                                      │
@@ -38,7 +40,6 @@ make
 # Generate a key
 python3 python/keygen.py
 # Copy the export line and run it on both sides, then:
-
 sudo TINYVPN_KEY=<key> ./tinyvpn server 5555 127.0.0.1 5556
 sudo TINYVPN_KEY=<key> ./tinyvpn client 5556 127.0.0.1 5555
 ```
@@ -48,10 +49,8 @@ sudo TINYVPN_KEY=<key> ./tinyvpn client 5556 127.0.0.1 5555
 ```bash
 # Machine 1
 python3 python/dh_keyx.py server 9999
-
 # Machine 2
 python3 python/dh_keyx.py client <machine1_ip> 9999
-
 # Both print the same TINYVPN_KEY — export it and start the tunnel
 ```
 
