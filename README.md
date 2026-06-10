@@ -3,19 +3,19 @@
 A lightweight VPN tunnel built from scratch — C core with AES-256-GCM encryption over UDP, and a Python control plane for key exchange and monitoring. Inspired by how WireGuard and OpenVPN are architected.
 
 ## Architecture
-┌─────────────────────────────────────────────────────┐
-│                 TinyVPN Architecture                 │
-│                                                      │
-│  [App] ──► [utun iface] ──► [C tunnel] ──► [UDP]   │
-│                                  │                   │
-│                            AES-256-GCM               │
-│                            encrypt/decrypt           │
-│                                  │                   │
-│  [Python control plane]          ▼                   │
-│   ├── dh_keyx.py  (DH key exchange)    [Peer]        │
-│   ├── monitor.py  (live stats)                       │
-│   └── keygen.py   (quick key gen)                    │
-└─────────────────────────────────────────────────────┘
++------------------------------------------------------+
+|                 TinyVPN Architecture                 |
+|                                                      |
+|  [App] --> [utun iface] --> [C tunnel] --> [UDP]    |
+|                                 |                    |
+|                           AES-256-GCM                |
+|                           encrypt/decrypt            |
+|                                 |                    |
+|  [Python control plane]         v                    |
+|   +-- dh_keyx.py  (DH key exchange)    [Peer]        |
+|   +-- monitor.py  (live stats)                       |
+|   +-- keygen.py   (quick key gen)                    |
++------------------------------------------------------+
 
 ## Stack
 - **C** — macOS `utun` kernel interface, AES-256-GCM via OpenSSL 3, UDP transport with custom packet framing
@@ -51,7 +51,7 @@ sudo TINYVPN_KEY=<key> ./tinyvpn client 5556 127.0.0.1 5555
 python3 python/dh_keyx.py server 9999
 # Machine 2
 python3 python/dh_keyx.py client <machine1_ip> 9999
-# Both print the same TINYVPN_KEY — export it and start the tunnel
+# Both print the same TINYVPN_KEY -- export it and start the tunnel
 ```
 
 ### Configure tunnel interfaces
@@ -69,7 +69,7 @@ python3 python/monitor.py utun<N>
 ```
 
 ## Security design
-- AES-256-GCM provides authenticated encryption — confidentiality + integrity in one pass
+- AES-256-GCM provides authenticated encryption -- confidentiality + integrity in one pass
 - Random 96-bit IV per packet prevents nonce reuse
-- DH key exchange over RFC 3526 2048-bit MODP group — no static keys on disk
+- DH key exchange over RFC 3526 2048-bit MODP group -- no static keys on disk
 - Magic number + GCM auth tag rejects tampered or replayed packets
